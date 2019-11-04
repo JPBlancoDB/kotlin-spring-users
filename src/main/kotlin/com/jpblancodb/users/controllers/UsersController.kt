@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/users")
-class UsersController(private val usersRepository: UsersRepository) {
+class UsersController(
+        private val usersRepository: UsersRepository,
+        private val bCryptPasswordEncoder: BCryptPasswordEncoder
+) {
 
     @GetMapping
     fun getUsers(): List<UserResponse> {
@@ -20,7 +23,7 @@ class UsersController(private val usersRepository: UsersRepository) {
 
     @PostMapping
     fun createUser(@RequestBody userRequest: UserRequest): UserResponse {
-        val user = User(username = userRequest.username, password = BCryptPasswordEncoder().encode(userRequest.password))
+        val user = User(username = userRequest.username, password = bCryptPasswordEncoder.encode(userRequest.password))
         usersRepository.save(user)
 
         return mapToUserResponse(user)

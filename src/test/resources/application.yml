@@ -6,3 +6,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+jwt:
+  secret: testSecret
+  authEndpoint: /api/auth
+  expiration: 10
